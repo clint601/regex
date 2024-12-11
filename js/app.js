@@ -44,11 +44,15 @@
 
 const confirmBtn = document.getElementById('confirmBtn')
 
-let user = {
-    id: 1,
+let userObj = {
+    id: 0,
     username: '',
-    password: ''
+    password: '',
+    dateCreated: '',
+    passwordDate: ''
 }
+
+let users = []
 
 // verify password
 
@@ -57,11 +61,86 @@ const verifyPassword = ()=> {
 
     const password = document.getElementById('password'). value
 
-    console.log(`username: ${username}; password: ${password}`)
+    // console.log(`username: ${username}; password: ${password}`)
+
+    const lowerTest = /[a-z]/ // test to see if there a lower case letter
+    const upperTest = /[A-Z]/
+    const numTest = /\d/
+    const specialTest = /\W/
+
+    const display = document.getElementById('display')
+    const reqList = document.createElement('ul')
+
+    if (password.length < 8) {
+        const reqItem = document.createElement('li')
+        reqItem.innerText = 'Password must be at least 8 characters'
+        reqList.appendChild(reqItem)
+    }
+
+    if (!password.match (lowerTest)) {
+        const reqItem = document.createElement('li')
+        reqItem.innerText = 'must contain at least one lowercase letter'
+        reqList.appendChild(reqItem)
+    }
+
+    if (!password.match (upperTest)) {
+        const reqItem = document.createElement('li')
+        reqItem.innerText = 'Must contain at least one uppercase letter'
+        reqList.appendChild(reqItem)
+    }
+
+    if (!password.match (numTest)) {
+        const reqItem = document.createElement('li')
+        reqItem.innerText = 'Must contain at least one digit (0-9)'
+        reqList.appendChild(reqItem)
+    }
+
+    if (!password.match (specialTest)) {
+        const reqItem = document.createElement('li')
+        reqItem.innerText = 'Must contain at least one special test  letter'
+        reqList.appendChild(reqItem)
+    }
+
+    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*\W).{8,}$/gm
+
+    username.length == 0 ? alert('Please enter a username'): null
+
+    // if (!password.match(regex)) {
+    //     display.innerText = 'Account created'
+    // } else {
+    //     display.appendChild(reqList)
+    // }
+
+    password.match(regex) ? createUser(username, password) : display.appendChild(reqList)
 }
+const matchPasswords = ()=> {
+    const matchPassword = document.getElementById('matchPassword'). value
+
+    const confirmPassord = document.getElementById('confirmPassword').value
+
+    const matchDisplay = document.getElementById('matchDisplay')
+
+    password != confirmPassord ? matchDisplay.innerText = 
+    'Passwords do not match' : verifyPassword()
+
+}
+
+    const createUser =(user,pass)=> {
+        userObj = {
+            id: user.length + 1,
+            username: user,
+            password: pass
+        }
+
+        users = [...users, userObj]
+
+        const display = document.getElementById('display')
+        display.innerText =`User ${userObj.username} created`
+    }
 
 confirmBtn.addEventListener('click', (e)=> {
     e.preventDefault()
 
-    verifyPassword()
+    // verifyPassword()
+    matchPasswords()
 })
